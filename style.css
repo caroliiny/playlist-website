@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+  font-family: "Montserrat", sans-serif;
+}
+
+body{
+    background-color: #001a36 ;
+}
+
+
+h1{
+   
+    margin-bottom: 20px;
+    text-align: center;
+    color: #CEDEF3;
+}
+
+.p1, p{
+    color: #79A6CD;
+    text-align: center;
+}
+
+.playlist { /*div que vai conter todas as caixinhas de musica*/
+    display:flex;
+    flex-wrap: wrap; 
+    padding: 40px;
+  
+  }
+
+  
+.music-box {
+  background: rgba(31, 67, 111, 0.4);
+  border-radius: 16px;
+  padding: 12px;
+  margin: 10px auto;
+  width: 18%; 
+  min-width: 180px;
+  box-shadow: 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease;
+  margin-bottom: 18px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes backTwinkle {
+
+  0% { border-color: rgb(255, 255, 255); }
+  25%{ border-color:rgb(164, 186, 212); }
+  50% { border-color: rgb(82, 115, 156); }
+  75% { border-color: rgb(51, 81, 117); }
+  100% { border-color: rgb(29, 63, 104); }
+
+}
+
+.twinkle{
+  animation: backTwinkle 1s infinite;
+}
+  
+  .music-box:hover { 
+    transform: scale(1.05);
+    
+  }
+  
+  .music-box h2 {
+    color: #CEDEF3;
+      font-size: 120%;
+      margin: 6px 0;
+      font-weight: 600;
+    
+  }
+  
+  .music-box p {
+    font-style: italic;
+    color: #7ca6dd;
+    margin-bottom: 8px;
+    font-size: 100%;
+  }
+
+  
+
+  .music-img {
+    width: 100%;       
+    height:15rem;        
+    object-fit: cover;   
+    border-radius: 10px;
+    border: 1px solid #ffffff45;
+    margin-bottom: 6%;
+   
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #fffefe;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 6%;
+  }
+
+  .progress {
+    height: 100%;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.2s;
+  }
+
+  .musicTime{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+  
+  .musicTime span{
+    color: #ffffff;
+    opacity: 0.7;
+    font-size: 12px;
+  }
+
+  .controls{
+    margin-top: 8px;
+    align-items: center;
+  }
+  
+  .btnPlay{
+    color: #ffffff;
+    background-color:#123e73;
+    border-radius: 100%;
+    padding: 8px;
+    border: 1px solid #ffffff45;
+    margin-left: 50px;
+    margin-right: 10px;
+    
+  }
+
+  .btnPlay:hover{
+    background-color: #1a5181;
+  }
+
+  .bx-caret-right, .bx-pause, .bx-heart, .bxs-heart{
+    font-size: 30px;
+  }
+
+  .favoriteIcon {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .bx-heart{
+    color: #ffffff;
+    font-size: 25px;
+  }
+
+  .bx-heart:hover{
+    color: #ffd256;
+  }
+
+  .bxs-heart{
+    color: #ffd256;
+  }
+
+  /*responsividade*/
+
+  @media (max-width: 768px) {
+    .playlist {
+      flex-direction:column;
+      padding: 20px;
+    }
+  
+    .music-box {
+      width: 90%;
+      max-width: none;
+    }
+  
+    h1 {
+      font-size: 24px;
+    }
+  
+    .p1 {
+      font-size: 16px;
+      padding: 0 10px;
+    }
+  }
+  
