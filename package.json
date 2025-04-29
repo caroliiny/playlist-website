@@ -1,0 +1,15 @@
+{
+  "name": "site-playlist",
+  "version": "1.0.0",
+  "description": "um site com a minha playlist \"A escolha de mercúrio\", do Spotify",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx live-server .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "playlist"
+  ],
+  "author": "Ana Caroliny",
+  "license": "ISC"
+}
