@@ -1,46 +1,49 @@
 const player = document.getElementById("player");
-const apiUrl = "https://itunes.apple.com/"; //Itunes api
+const apiUrl = "https://itunes.apple.com/";
 
-function treatName(name){
-
-  return name.replace(/[^a-zA-Z0-9 ]/g, '');
-
+function treatName(name) {
+  return name.replace(/[^a-zA-Z0-9'\s]/g, '').trim();
 }
 
 let currentMusic = null;
 
-async function search(musicName, artistName, button) {
+async function search(musicName, artistName, box) {
 
+  const button = box.querySelector(".btnPlay");
   const url = `${apiUrl}/search?term=${musicName}&entity=song`;
   const response = await fetch(url);
   
   const music = await response.json().then((result) => {
-    const bestResult = result.results.find((music) => {
-      return treatName(music.artistName.toLowerCase()) === artistName.toLowerCase();
-    });
-    return bestResult;
-  });
 
-  //INITTWINKLE
+    const bestResult = result.results.find((music) => {
+
+      return treatName(music.artistName.toLowerCase()) === artistName.toLowerCase();
+
+    });
+
+    return bestResult;
+
+  });
+  
   function initTwinkle(box) {
+
     let twinkleInterval = setInterval(() => {
       box.classList.toggle("twinkle");
     }, 600);
   
     box.dataset.twinkleId = twinkleInterval;
+    
   }
 
-  //STOPTWINKLE
   function stopTwinkle(box) {
     clearInterval(box.dataset.twinkleId);
     box.classList.remove("twinkle");
   }
   
-  //UPDATE ICON
-  function updateIcon(button, isPlaying) {
+  function updateButton(button, isPlaying) {
+
     const playIcon = button.querySelector(".bx-caret-right");
     const pauseIcon = button.querySelector(".bx-pause");
-    const box = button.closest(".music-box");
   
     if (isPlaying) {
       playIcon.style.display = "none";
@@ -53,23 +56,36 @@ async function search(musicName, artistName, button) {
       pauseIcon.style.display = "none";
       stopTwinkle(box);
     }
+
   }
   
   const isSameMusic = currentMusic && currentMusic.trackId === music.trackId;
 
-  //IS SAME MUSIC
-  if (isSameMusic) { //se for a mesma musica que ta no currentMusic
-
+  
+  if (isSameMusic) { 
+    
     if (player.paused) {
 
       player.play();
-      updateIcon(button, true);
+
+      player.addEventListener("timeupdate", () => {
+        console.log(player.currentTime / player.duration * 100);
+        box.querySelector(".progress").style.width = player.currentTime / player.duration * 100 + "%";
+      })
+      
+      player.addEventListener("ended", () => {
+        stopTwinkle(box);
+        updateButton(button, false);
+
+      })
+
+      updateButton(button, true);
       console.log("Retomando:", music.trackName);
 
     } else {
 
       player.pause();
-      updateIcon(button, false);
+      updateButton(button, false);
       console.log("Pausando:", music.trackName);
     }
 
@@ -78,17 +94,31 @@ async function search(musicName, artistName, button) {
     currentMusic = music;
     player.src = music.previewUrl;
     player.play();
-    updateAllIcons();
-    updateIcon(button, true);
+
+    player.addEventListener("timeupdate", () => {
+      console.log(player.currentTime / player.duration * 100);
+      box.querySelector(".progress").style.width = player.currentTime / player.duration * 100 + "%";
+    })
+    
+    player.addEventListener("ended", () => {
+      stopTwinkle(box);
+      updateButton(button, false);
+
+    })
+
+    updateAll();
+    updateButton(button, true);
     console.log("Tocando:", musicName);
     stopTwinkle(box);
     
   }
   //UPDATE ALL ICONS
-  function updateAllIcons() {
+  function updateAll() {
+    
   const allBoxes = document.querySelectorAll('.music-box');
 
   allBoxes.forEach(box => {
+
     const playIcon = box.querySelector(".bx-caret-right");
     const pauseIcon = box.querySelector(".bx-pause");
 
@@ -98,9 +128,9 @@ async function search(musicName, artistName, button) {
     }
 
     stopTwinkle(box); // parar o efeito das outras músicas
+
   });
 }
-
   
 }
 
@@ -152,7 +182,7 @@ const musicas = [
     },
     {
       name: "Everybody Hurts",
-      artist: "R.E.M."
+      artist: "REM"
     },
     {
       name: "Imagine",
@@ -171,20 +201,12 @@ const musicas = [
       artist: "The Crane Wives"
     },
     {
-      name: "Bridge Over Troubled Water",
-      artist: "Simon & Garfunkel"
-    },
-    {
       name: "No Surprises",
       artist: "Radiohead"
     },
     {
       name: "The Temple Of The King",
       artist: "Rainbow"
-    },
-    {
-      name: "Follow Your Heart",
-      artist: "Scorpions"
     },
     {
       name: "Dreams",
@@ -275,7 +297,7 @@ const musicas = [
       artist: "Eric Clapton"
     },
     {
-      name: "Blackbird - Remastered 2009",
+      name: "Blackbird",
       artist: "The Beatles"
     },
     {
@@ -299,7 +321,7 @@ const musicas = [
       artist: "Kansas"
     },
     {
-      name: "Hey Jude - 2015 Mix",
+      name: "Hey Jude",
       artist: "The Beatles"
     },
     {
@@ -363,7 +385,7 @@ const musicas = [
       artist: "Linkin Park"
     },
     {
-      name: "In My Life - Remastered 2009",
+      name: "In My Life",
       artist: "The Beatles"
     },
     {
@@ -418,15 +440,20 @@ const musicas = [
 ]
 
 const playlist = document.getElementById("playlist");
-
+let musicNumber = 1;
 
 window.onload = () => {
 
+  
+
   musicas.forEach((music, index) => { //loop
 
+    console.log("Música:",musicNumber, "-", music);
+    musicNumber ++;
     const div = document.createElement("div"); //to create music box
     const musicName = treatName(music.name);
     const musicArtist = treatName(music.artist);
+    
 
     const imgNumber = (index % 30) + 1; 
     const img = document.createElement("img"); // to create images
@@ -475,7 +502,7 @@ window.onload = () => {
     const btnPlay = div.querySelector(".btnPlay");
 
     btnPlay.addEventListener("click", () => {
-      search(music.name, music.artist, btnPlay);
+      search(music.name, music.artist, div);
     });
 
 
