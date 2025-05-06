@@ -123,7 +123,7 @@ h1{
     align-items: center;
   }
   
-  .btnPlay{
+  .btnPlayer{
     color: #ffffff;
     background-color:#123e73;
     border-radius: 100%;
@@ -134,7 +134,7 @@ h1{
     
   }
 
-  .btnPlay:hover{
+  .btnPlayer:hover{
     background-color: #1a5181;
   }
 
